@@ -1,0 +1,39 @@
+import radius as radius
+
+@description('Specifies the environment for resources.')
+param environment string
+
+@description('The ID of your Radius Application. Automatically injected by the rad CLI.')
+param application string
+
+// The frontend container that serves the application UI
+resource frontend 'Applications.Core/containers@2023-10-01-preview' = {
+  name: 'frontend'
+  properties: {
+    application: application
+    environment: environment
+    container: {
+      // This image is where the app's frontend code lives
+      image: 'ghcr.io/radius-project/samples/dapr-frontend:latest'
+      env: {
+        // An environment variable to tell the frontend container where to find the backend
+        CONNECTION_BACKEND_APPID: 'backend'
+        // An environment variable to override the default port that .NET Core listens on
+        ASPNETCORE_URLS: 'http://*:8080'
+      }
+      // The frontend container exposes port 8080, which is used to serve the UI
+      ports: {
+        ui: {
+          containerPort: 8080
+        }
+      }
+    }
+    // The extension to configure Dapr on the container, which is used to invoke the backend
+    extensions: [
+      {
+        kind: 'daprSidecar'
+        appId: 'frontend'
+      }
+    ]
+  }
+}

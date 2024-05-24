@@ -10,7 +10,7 @@ You want to run this app using Radius.
       - this will create a new Radius resource group called 'test'
     - create a namespace 'test'
     - name the app 'demo01'
-- `rad run .\app.bicep -e demos`
+- `rad run .\app.bicep -e test`
 - select k8s namespace
     - `kubectl config set-context --current --namespace=test-demo01`
 - open a browser
@@ -22,7 +22,7 @@ You want to run this app using Radius.
     - `explorer http://localhost:8088`
 # Cleanup
 - hit `CTRL+C` to stop
-- `rad app remove demo01 -g test`
+- `rad app delete demo01 -g test`
 - `kubectl delete ns test-demo01`
 
 - `rad env delete test -y`
