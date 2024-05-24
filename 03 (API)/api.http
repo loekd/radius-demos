@@ -14,3 +14,9 @@ GET http://localhost:8088/api/kubernetes/proxy/apis/api.ucp.dev/v1alpha3/planes/
 
 ### Delete specific application
 DELETE http://localhost:8088/api/kubernetes/proxy/apis/api.ucp.dev/v1alpha3/planes/radius/local/resourcegroups/{{ResourceGroupName}}/providers/Applications.Core/applications/{{ApplicationName}}?api-version=2023-10-01-preview
+
+
+
+### List applications (will return 401)
+GET https://management.azure.com/providers/Applications.Core/operations?api-version=2023-10-01-preview
+

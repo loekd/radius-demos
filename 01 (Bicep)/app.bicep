@@ -9,6 +9,8 @@ param environment string
 resource container 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'demo'
   properties: {
+    // application: app.id
+    // environment: env.id
     application: application
     environment: environment
     container: {
@@ -21,6 +23,24 @@ resource container 'Applications.Core/containers@2023-10-01-preview' = {
     }
   }
 }
+// resource env 'Applications.Core/environments@2023-10-01-preview' = {
+//   name: 'test'
+//   properties:{
+//     compute: {
+//       kind: 'kubernetes'
+//       namespace: 'test-demo01'
+//     }
+//   }
+// }
 
-
-
+// resource app 'Applications.Core/applications@2023-10-01-preview' = {
+//   name: 'demo01'
+//   properties: {
+//     environment: env.id
+//     extensions: [
+//       {
+//         kind: 'kubernetesNamespace'
+//         namespace: 'test-demo01'
+//       } ]
+//   }
+// }
