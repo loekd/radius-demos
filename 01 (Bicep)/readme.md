@@ -12,7 +12,7 @@ You want to run this app using Radius.
     - name the app 'demo01'
 - `rad run .\app.bicep -e demos`
 - select k8s namespace
-    - `kubectl config set-context --current --namespace=demos-demo01`
+    - `kubectl config set-context --current --namespace=test-demo01`
 - open a browser
     - navigate to `explorer http://localhost:3000/`
 
