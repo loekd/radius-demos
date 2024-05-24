@@ -1,0 +1,16 @@
+
+@ApplicationName= demo01
+#demos-demo01
+@ResourceGroupName= test 
+#demos-demos-demo01
+@Environment= local
+
+### List applications
+GET http://localhost:8088/api/kubernetes/proxy/apis/api.ucp.dev/v1alpha3/planes/radius/local/resourcegroups/{{ResourceGroupName}}/providers/Applications.Core/applications?api-version=2023-10-01-preview
+
+### Get specific application
+GET http://localhost:8088/api/kubernetes/proxy/apis/api.ucp.dev/v1alpha3/planes/radius/local/resourcegroups/{{ResourceGroupName}}/providers/Applications.Core/applications/{{ApplicationName}}?api-version=2023-10-01-preview
+
+
+### Delete specific application
+DELETE http://localhost:8088/api/kubernetes/proxy/apis/api.ucp.dev/v1alpha3/planes/radius/local/resourcegroups/{{ResourceGroupName}}/providers/Applications.Core/applications/{{ApplicationName}}?api-version=2023-10-01-preview
