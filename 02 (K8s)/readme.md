@@ -3,20 +3,27 @@ Assumes you have an existing app that has already been containerized and deploye
 You want to show this app on the Radius dashboard.
 
 # Run
+- Create a place to store custom recipe:
+  - `rad init --full`
+    - fill out wizard
+    - create new environment named 'test'
+      - this will create a new Radius resource group called 'test'
+    - create a namespace 'test'
+    - don't create an app
 - Check existing recipes:
-  - `rad recipe list -g demos -e demos`
+  - `rad recipe list -g test -e test`
 - Publish the customized Redis Cache recipe to an OCI registry:
   - `rad bicep publish --file redisCacheRecipe.bicep --target br:acrradius.azurecr.io/recipes/rediscache:0.1.0`
 - Register the recipe as part of the environment:
-  - `rad recipe register default --environment demos --resource-type 'Applications.Datastores/redisCaches' --template-kind bicep --template-path acrradius.azurecr.io/recipes/rediscache:0.1.0 --group demos`
+  - `rad recipe register default --environment test --resource-type 'Applications.Datastores/redisCaches' --template-kind bicep --template-path acrradius.azurecr.io/recipes/rediscache:0.1.0 --group test`
 - Check existing recipes again:
-  - `rad recipe list -g demos -e demos`
+  - `rad recipe list -g test -e test`
 
 - Create and select k8s namespace
-    - `kubectl create ns demos-demo02`
-    - `kubectl config set-context --current --namespace=demos-demo02`
+    - `kubectl create ns test-demo02`
+    - `kubectl config set-context --current --namespace=test-demo02`
 - Deploy the app using kubectl (not Radius)
-    - `kubectl apply -f .\deployment.yaml`
+    - `kubectl apply -f .\deployment.yaml --namespace test-demo02`
 - Forward traffic
     Forward traffic to the demo app (blocking call):
     - `kubectl port-forward services/demo 3000:3000`
@@ -33,7 +40,7 @@ You want to show this app on the Radius dashboard.
   - Open 'deployment.yaml' and enable lines 7 & 8:
   ```yaml
   radapp.io/enabled: 'true'
-  radapp.io/environment: demos
+  radapp.io/environment: test
   ```
 - Redeploy and open the Radius Dashboard. It does show the app
   - `explorer http://localhost:8088`
@@ -52,7 +59,7 @@ You want to show this app on the Radius dashboard.
     metadata:
       name: db
     spec:
-      environment: 'demos'
+      environment: 'test'
       type: Applications.Datastores/redisCaches
   ```
 - Redeploy and open the Radius Dashboard. It does show the app and the cache.
@@ -61,5 +68,6 @@ You want to show this app on the Radius dashboard.
 # Cleanup
 - Hit `CTRL+C` to stop port forward
 - Cleanup:
+  - `rad app delete test-demo02 -g test-test-demo02`
   - `kubectl delete -f .\deployment.yaml`
-  - `kubectl delete ns demos-demo02`
+  - `kubectl delete ns test-demo02`
