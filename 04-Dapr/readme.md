@@ -27,14 +27,22 @@ You want to run this app using Radius.
 
 - `rad run ./app.bicep -e test`
   - If it returns a timeout error, just try again.
+  - It should report an issue about a missing recipe.
 - Publish and Register the custom state store recipe:
-  - `rad bicep publish --file stateStoreRecipe.bicep --target br:acrradius.azurecr.io/recipes/statestore:0.1.0`
+  - `rad bicep publish --file stateStoreRecipe.bicep --target br:acrradius.azurecr.io/recipes/statestore:0.1.0` (skip if you don't have an ACR)
   - `rad recipe register default --environment test --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/statestore:0.1.0 --group test`
+
+- Run the app again:
+  - `rad run ./app.bicep -e test`
+  - If it returns a timeout error, just try again.
+  
 - Select k8s namespace
     - `kubectl config set-context --current --namespace=test-demo04`
 - Open a browser
     - navigate to the backend API, `explorer http://localhost:3000/order`
     - show the frontend: `explorer http://localhost:8080`
+    - The frontend is talking to the backend, connection provided by Dapr.
+    - The backend uses a database, connection details provided by Radius.
 
 - Forward traffic:
     Expose Radius dashboard (blocking call):
