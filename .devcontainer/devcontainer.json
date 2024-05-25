@@ -28,8 +28,8 @@
 			]
 		}
 	},
-	"onCreateCommand": "bash /workspaces/radius/.devcontainer/on-create.sh",
-	"postCreateCommand": "bash /workspaces/radius/.devcontainer/post-create.sh",
+	"onCreateCommand": "bash ./.devcontainer/on-create.sh",
+	"postCreateCommand": "bash ./.devcontainer/post-create.sh",
 	"runArgs": [
 		"--privileged",
 		"--init"
