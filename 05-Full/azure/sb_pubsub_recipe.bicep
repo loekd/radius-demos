@@ -7,7 +7,7 @@ param context object
 
 
 @description('The Azure region where the resources will be deployed.')
-param location string = resourceGroup().location
+param location string = 'northeurope'
 
 @description('The unique seed used to generate resource names.')
 param uniqueSeed string = resourceGroup().id
@@ -98,4 +98,4 @@ output result object = {
 }
 //deploying the recipe can be done by this command:
 //rad bicep publish --file sb_pubsub_recipe.bicep --target br:acrradius.azurecr.io/recipes/sbpubsub:0.1.0
-//rad recipe register pubsubRecipe --environment azure --resource-type 'Applications.Dapr/pubSubBrokers' --template-kind bicep --template-path acrradius.azurecr.io/recipes/sbpubsub:0.1.0 --group azure
+//rad recipe register pubsubRecipe --environment prod --resource-type 'Applications.Dapr/pubSubBrokers' --template-kind bicep --template-path acrradius.azurecr.io/recipes/sbpubsub:0.1.0 --group prod

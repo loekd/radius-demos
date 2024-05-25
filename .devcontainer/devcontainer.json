@@ -24,7 +24,8 @@
 				"mongodb.mongodb-vscode",
 				"GitHub.copilot",
 				"ms-azuretools.rad-vscode-bicep",
-				"ms-kubernetes-tools.vscode-kubernetes-tools"
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"humao.rest-client"
 			]
 		}
 	},

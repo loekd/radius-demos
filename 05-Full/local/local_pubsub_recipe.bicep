@@ -142,4 +142,4 @@ output result object = {
 
 //deploying the recipe can be done by this command:
 //rad bicep publish --file local_pubsub_recipe.bicep --target br:acrradius.azurecr.io/recipes/redispubsub:0.1.0
-//rad recipe register pubsubRecipe --environment local --resource-type 'Applications.Dapr/pubSubBrokers' --template-kind bicep --template-path acrradius.azurecr.io/recipes/redispubsub:0.1.0 --group local
+//rad recipe register pubsubRecipe --environment test --resource-type 'Applications.Dapr/pubSubBrokers' --template-kind bicep --template-path acrradius.azurecr.io/recipes/redispubsub:0.1.0 --group test

@@ -1,9 +1,9 @@
 
-@ApplicationName= demo01
+@ApplicationName= radius
 #demos-demo01
-@ResourceGroupName= test 
+@ResourceGroupName= azure 
 #demos-demos-demo01
-@Environment= local
+@Environment= azure
 
 ### List applications
 GET http://localhost:8088/api/kubernetes/proxy/apis/api.ucp.dev/v1alpha3/planes/radius/local/resourcegroups/{{ResourceGroupName}}/providers/Applications.Core/applications?api-version=2023-10-01-preview

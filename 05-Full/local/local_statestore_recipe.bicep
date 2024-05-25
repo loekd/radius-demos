@@ -270,9 +270,5 @@ output result object = {
 //deploying the recipe can be done by this command:
 //rad bicep publish --file local_statestore_recipe.bicep --target br:acrradius.azurecr.io/recipes/localstatestore:0.1.1
 
-//rad recipe register stateStoreRecipe --environment azure --resource-type 'Applications.Datastores/mongoDatabases' --template-kind bicep --template-path acrradius.azurecr.io/recipes/localstatestore:0.1.0 --group azure
-//rad recipe register stateStoreRecipe --environment local --resource-type 'Applications.Datastores/mongoDatabases' --template-kind bicep --template-path acrradius.azurecr.io/recipes/localstatestore:0.1.0 --group local
-
-
-//rad recipe register stateStoreRecipe --environment azure --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/localstatestore:0.1.1 --group azure
-//rad recipe register stateStoreRecipe --environment local --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/localstatestore:0.1.1 --group local
+//rad recipe register stateStoreRecipe --environment prod --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/localstatestore:0.1.1 --group prod
+//rad recipe register stateStoreRecipe --environment test --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/localstatestore:0.1.1 --group test
