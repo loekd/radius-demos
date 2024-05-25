@@ -1,0 +1,96 @@
+{
+	"name": "devcontainer",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+		"ghcr.io/devcontainers/features/azure-cli:1": {},
+		"ghcr.io/rio/features/k3d:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"ms-azuretools.vscode-dapr",
+				"ms-dotnettools.csharp",
+				"ms-azuretools.vscode-docker",
+				"ms-python.python",
+				"dunn.redis",
+				"mongodb.mongodb-vscode",
+				"GitHub.copilot",
+				"ms-azuretools.rad-vscode-bicep",
+				"ms-kubernetes-tools.vscode-kubernetes-tools"
+			]
+		}
+	},
+	"onCreateCommand": "bash /workspaces/radius/.devcontainer/on-create.sh",
+	"postCreateCommand": "bash /workspaces/radius/.devcontainer/post-create.sh",
+	"runArgs": [
+		"--privileged",
+		"--init"
+	],
+	"forwardPorts": [
+		8080,
+		8088,
+		8089,
+		8081,
+		16686,
+		8082
+	],
+	"portsAttributes": {
+		"8088": {
+			"label": "dapr-dashboard",
+			"onAutoForward": "notify",
+			"protocol": "http"
+		},
+		"80": {
+			"label": "frontend",
+			"onAutoForward": "notify",
+			"protocol": "http"
+		},
+		"8080": {
+			"label": "dispatch-api",
+			"onAutoForward": "notify",
+			"protocol": "http"
+		},
+		"8082": {
+			"label": "plant-api",
+			"onAutoForward": "notify",
+			"protocol": "http"
+		},
+		"8081": {
+			"label": "k3s",
+			"onAutoForward": "notify"
+		},
+		"16686": {
+			"label": "zipkin-viewer",
+			"onAutoForward": "notify"
+		},
+		"27017": {
+			"onAutoForward": "silent"
+		},
+		"27018": {
+			"onAutoForward": "silent"
+		},
+		"27019": {
+			"onAutoForward": "silent"
+		},
+		"36689": {
+			"onAutoForward": "silent"
+		},
+		"42441": {
+			"onAutoForward": "silent"
+		},
+		"42617": {
+			"onAutoForward": "silent"
+		},
+		"44223": {
+			"onAutoForward": "silent"
+		}
+	}
+}
