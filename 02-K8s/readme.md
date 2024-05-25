@@ -32,7 +32,7 @@ You want to show this app on the Radius dashboard.
     
 - Open a browser and show the app:
     - `explorer http://localhost:3000`
-- Explore the Radius Dashboard, it does not show the app.
+- Explore the Radius Dashboard, it does **not** show the app.
   - `explorer http://localhost:8088`
 
 ## Enable Radius
