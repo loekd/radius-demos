@@ -25,7 +25,7 @@ You want to run this app using Radius.
         (press enter to confirm or esc to restart)
      ```
 
-- `rad run .\app.bicep -e test`
+- `rad run ./app.bicep -e test`
   - If it returns a timeout error, just try again.
 - Publish and Register the custom state store recipe:
   - `rad bicep publish --file stateStoreRecipe.bicep --target br:acrradius.azurecr.io/recipes/statestore:0.1.0`

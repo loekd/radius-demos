@@ -36,3 +36,5 @@ rad install kubernetes
 ## hint to run the containers using radius
 echo "Check out the numbered folders for exercises"
 
+# disable commit signing locally
+git config --local commit.gpgsign false
