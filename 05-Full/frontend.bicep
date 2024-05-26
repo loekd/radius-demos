@@ -9,11 +9,14 @@ param application string
 @description('The container registry name (leave empty for local deployments).')
 param containerRegistry string = 'acrradius.azurecr.io'
 
-@description('Indicates whether to use HTTPS for the Dispatch API. (default: true)')
-param useHttps bool = true
+@description('Indicates whether to use HTTPS for the Dispatch API. (default: true for prod)')
+param useHttps bool = contains(environment, 'prod')
 
 @description('The host name of the application.')
 param hostName string = 'demo.loekd.com'
+
+@description('The host name of the application.')
+param overrideDispatchApiHostAndPort string = ''
 
 @description('The name of the environment.')
 var environmentName = split(environment, '/')[9]
@@ -25,7 +28,7 @@ var applicationName = split(application, '/')[9]
 var kubernetesNamespace = '${environmentName}-${applicationName}'
 
 @description('The host and port on which the Dispatch API is exposed (through the gateway).')
-var dispatchApiHostAndPort = useHttps ? 'https://${hostName}' : 'http://${hostName}'
+var dispatchApiHostAndPort = empty(overrideDispatchApiHostAndPort) ? useHttps ? 'https://${hostName}' : 'http://${hostName}' : overrideDispatchApiHostAndPort
 
 @description('The port on which the frontend is exposed internally.')
 var frontendPort = 80
@@ -75,7 +78,7 @@ resource frontend 'Applications.Core/containers@2023-10-01-preview' = {
     environment: environment
     container: {
       image: empty(containerRegistry) ? 'missioncriticaldemo.frontend:latest' : '${containerRegistry}/missioncriticaldemo.frontend:latest'
-      imagePullPolicy: empty(containerRegistry) ? 'Never' : 'IfNotPresent'
+      imagePullPolicy: empty(containerRegistry) ? 'Never' : 'Always'
       ports: {
         web: {
           containerPort: frontendPort
@@ -124,13 +127,13 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
   properties: {
     application: application 
     environment: environment
-    hostname: {
-      fullyQualifiedHostname: hostName
-    }
-    tls: {
-      sslPassthrough: false
-      certificateFrom: appCert.id
-    }
+    // hostname: {
+    //   fullyQualifiedHostname: hostName
+    // }
+    // tls: {
+    //   sslPassthrough: false
+    //   certificateFrom: appCert.id
+    // }
     routes: [
       {
         path: '/api' //Dispatch REST API

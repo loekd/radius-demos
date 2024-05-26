@@ -18,7 +18,7 @@
      ```
      You've selected the following:
 
-        🔧 Use existing Radius 0.33.0 install on docker-desktop
+        🔧 Use existing Radius 0.34.0 install on docker-desktop
         🌏 Create new environment test
         - Kubernetes namespace: test
         - Create app.bicep
@@ -38,23 +38,32 @@
 ## Run
 
 - Set kubectl context if needed:
-    - `kubectl config use-context docker-desktop`    
+    - `kubectl config use-context k3d-k3s-default`    
 - Deploy the Plant API:
     - `rad deploy ./plant.bicep`
 - Deploy the Dispatch api:
     - `rad deploy ./dispatch.bicep`
     - If you get `"message": "Container state is 'Terminated' Reason: Error, Message: "` errors, try run & deploy again until it works
 - Run the Frontend and Gateway:
-    - Codespaces:
+    - **Localhost / Dev Container**:        
+        - `rad run ./frontend.bicep --parameters hostName=localhost` 
+    - **Codespaces**:
         - `rad run ./frontend.bicep --parameters hostName=$CODESPACE_NAME-8080.app.github.dev`
         - Turn dispatch port to public (to allow CORS)
             `gh codespace ports visibility 8080:public -c $CODESPACE_NAME`
-    - Localhost:        
-        - `rad run ./frontend.bicep --parameters hostName=localhost` (access trough gateway)
-    - Please note that the Gateway breaks signalR after 15s
+    - **K3d** 
+        - If you get 405 Errors about SignalR, it could be due to the Gateway not working on K3d.
+        - Workaround for this is to connect the frontend directly to the Dispatch API Service instead of passing through the Gateway:
+        - `rad run ./frontend.bicep --parameters hostName=localhost --parameters overrideDispatchApiHostAndPort=http://localhost:8080`
+    - **Bug** - Please note that the Gateway breaks signalR after 15s
         - fix: `kubectl patch httpproxy dispatchapi -n test-demo05 --type='json' -p='[{"op": "add", "path": "/spec/routes/0/enableWebsockets", "value": true}]'`
         - This can block redeployments, so delete the custom resource if you see any errors about 'patch httpproxy':
         - `kubectl delete httpproxy dispatchapi -n test-demo05`
+- Explore the Frontend:
+    - `explorer http://localhost`
+- Explore the Radius Dashboard:
+    - `explorer http://localhost:7007`
+
 
 # Azure
 
