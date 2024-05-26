@@ -127,13 +127,13 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
   properties: {
     application: application 
     environment: environment
-    // hostname: {
-    //   fullyQualifiedHostname: hostName
-    // }
-    // tls: {
-    //   sslPassthrough: false
-    //   certificateFrom: appCert.id
-    // }
+    hostname: {
+      fullyQualifiedHostname: hostName
+    }
+    tls: {
+      sslPassthrough: false
+      certificateFrom: appCert.id
+    }
     routes: [
       {
         path: '/api' //Dispatch REST API
