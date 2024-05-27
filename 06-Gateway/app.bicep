@@ -13,9 +13,15 @@ resource green 'Applications.Core/containers@2023-10-01-preview' = {
     environment: environment
     container: {
       image: 'xpiritbv/bluegreen:green'
+      env: {
+        ASPNETCORE_URLS: 'http://+:8080'
+      }
       ports: {
         web: {
           containerPort: 8080
+          port: 8080
+          protocol: 'TCP'
+          scheme: 'http'
         }
       }
     }
@@ -29,9 +35,15 @@ resource blue 'Applications.Core/containers@2023-10-01-preview' = {
     environment: environment
     container: {
       image: 'xpiritbv/bluegreen:blue'
+      env: {
+        ASPNETCORE_URLS: 'http://+:8082'
+      }
       ports: {
         web: {
-          containerPort: 8080
+          containerPort: 8082
+          port: 8082
+          protocol: 'TCP'
+          scheme: 'http'
         }
       }
     }
@@ -49,15 +61,14 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
     }
     routes: [
       {
-        path: '/blue'
-        destination: 'http://${blue.name}:${blue.properties.container.ports.web.containerPort}'
-        replacePrefix: '/blue'  
-      }      
-      {
         path: '/green' 
-        destination: 'http://${green.name}:${green.properties.container.ports.web.containerPort}'
+        destination: 'http://green:8080'
         replacePrefix: '/green'
       }      
+      {
+        path: '/'
+        destination: 'http://blue:8082'
+      }
     ]
   }
 }
