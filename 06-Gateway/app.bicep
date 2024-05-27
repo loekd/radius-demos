@@ -6,6 +6,22 @@ param application string
 @description('Specifies the environment for resources. Injected automatically by the rad CLI.')
 param environment string
 
+resource nginx 'Applications.Core/containers@2023-10-01-preview' = {
+  name: 'nginx'
+  properties: {
+    application: application
+    environment: environment
+    container: {
+      image: 'nginx'      
+      ports: {
+        web: {
+          containerPort: 80
+        }
+      }
+    }
+  }
+}
+
 resource green 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'green'
   properties: {
@@ -49,25 +65,30 @@ resource blue 'Applications.Core/containers@2023-10-01-preview' = {
     }
   }
 }
-
+  
 
 resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
   name: 'buggy-gateway'
   properties: {
     application: application 
     environment: environment
+    internal: true
     hostname: {
       fullyQualifiedHostname: 'localhost'
     }
     routes: [
       {
-        path: '/green' 
+        path: '/api' 
         destination: 'http://green:8080'
-        replacePrefix: '/green'
       }      
       {
-        path: '/'
+        path: '/blue'
         destination: 'http://blue:8082'
+        replacePrefix: '/'
+      }
+      {
+        path: '/'
+        destination: 'http://nginx:80'
       }
     ]
   }
