@@ -29,6 +29,10 @@
 			]
 		}
 	},
+	"workspaceFolder": "/workspaces/radius",
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
 	"onCreateCommand": "bash ./.devcontainer/on-create.sh",
 	"postCreateCommand": "bash ./.devcontainer/post-create.sh",
 	"runArgs": [
