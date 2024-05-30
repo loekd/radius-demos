@@ -49,6 +49,10 @@ You want to run this app using Radius.
     - `kubectl port-forward services/dashboard 8088:80 -n radius-system`
     - `explorer http://localhost:8088`
     
+# Observations
+- The software doesn't need to know the actual implementation of storage and pub/sub messaging components. (thanks to Dapr)
+- This makes it simpler to define an application with state and messaging elements.
+
 # Cleanup
 - hit `CTRL+C` to stop
 - `rad app delete demo04 -g test`
