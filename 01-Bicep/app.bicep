@@ -9,8 +9,8 @@ param environment string
 resource container 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'demo'
   properties: {
-    application: application
-    environment: environment
+    application: application //Use the injected application ID
+    environment: environment //Use the injected environment ID
     container: {
       image: 'ghcr.io/radius-project/samples/demo:latest'
       ports: {
@@ -19,6 +19,23 @@ resource container 'Applications.Core/containers@2023-10-01-preview' = {
         }
       }
     }
+    // Uncomment the following code to connect to the Redis cache below
+    // connections:{
+    //   orders: {
+    //     source: redisCache.id
+    //   }
+    // }
   }
 }
 
+//uncomment the following code to add a Redis cache
+// resource redisCache 'Applications.Datastores/redisCaches@2023-10-01-preview' = {
+//   name: 'redis'
+//   properties: {
+//     application: application
+//     environment: environment
+//     recipe: {
+//       name: 'default'
+//     }
+//   }
+// }

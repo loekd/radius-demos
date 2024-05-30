@@ -34,6 +34,15 @@ You want to run this app using Radius.
 - Explore the Radius dashboard:
     - `explorer http://localhost:8088`
 
+- Add and use a recipe for persisted state
+  - `rad recipe register default --environment test --resource-type 'Applications.Datastores/redisCaches' --template-kind bicep --template-path acrradius.azurecr.io/recipes/rediscache:0.1.0 --group test`
+  -  Uncomment lines 23-27 and 32-41 to add and connect a Redis Cache.
+
+# Observations
+The main issues here:
+- We're connecting to a specific database type.
+- The software needs to know about the way it will get the connection string.
+
 # Cleanup
 - hit `CTRL+C` to stop the port forward, and the app
 - `rad app delete demo01 -g test -y`
