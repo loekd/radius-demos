@@ -7,8 +7,8 @@ param environment string
 param application string
 
 // The frontend container that serves the application UI
-resource frontend 'Applications.Core/containers@2023-10-01-preview' = {
-  name: 'frontend'
+resource frontend02 'Applications.Core/containers@2023-10-01-preview' = {
+  name: 'frontend02'
   properties: {
     application: application
     environment: environment

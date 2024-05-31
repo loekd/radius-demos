@@ -6,52 +6,28 @@
 
 # Local runs
 
-## Prepare
+## Prepare 
 
-- `rad init --full`
-    - fill out wizard
-    - create new environment named 'test'
-      - this will create a new Radius resource group called 'test'
-    - create a namespace 'test'
-    - Do not scaffold an app.
+Select the test workspace.
+  - `rad workspace switch test`
 
-     ```
-     You've selected the following:
-
-        🔧 Use existing Radius 0.34.0 install on docker-desktop
-        🌏 Create new environment test
-        - Kubernetes namespace: test
-        - Create app.bicep
-        - Create .rad\rad.yaml
-        📋 Update local configuration
-
-        (press enter to confirm or esc to restart)
-     ```
-
-
-- Deploy **local** recipes
-    - `cd local`
-    - `rad recipe register pubsubRecipe --environment test --resource-type 'Applications.Dapr/pubSubBrokers' --template-kind bicep --template-path acrradius.azurecr.io/recipes/redispubsub:0.1.0 --group test`
-    - `rad recipe register stateStoreRecipe --environment test --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/localstatestore:0.1.0 --group test`
-    - `rad recipe register jaegerRecipe --environment test --resource-type 'Applications.Core/extenders' --template-kind bicep --template-path acrradius.azurecr.io/recipes/jaeger:0.1.0 --group test`
-    - `cd ..`
 ## Run
 
 - Set kubectl context if needed:
-    - `kubectl config use-context k3d-k3s-default`    
+    - `kubectl config use-context docker-desktop`    
 - Deploy the Plant API:
     - `rad deploy ./plant.bicep`
 - Deploy the Dispatch api:
     - `rad deploy ./dispatch.bicep`
     - If you get `"message": "Container state is 'Terminated' Reason: Error, Message: "` errors, try run & deploy again until it works
 - Run the Frontend and Gateway:
-    - **Localhost / Dev Container**:        
-        - `rad run ./frontend.bicep --parameters hostName=localhost` 
+    - **Localhost + Docker-Desktop**:        
+        - `rad run ./frontend.bicep --parameters hostName=localhost --parameters useHttps=true` 
     - **Codespaces**:
         - `rad run ./frontend.bicep --parameters hostName=$CODESPACE_NAME-8080.app.github.dev`
         - Turn dispatch port to public (to allow CORS)
             `gh codespace ports visibility 8080:public -c $CODESPACE_NAME`
-    - **K3d** 
+    - **Dev Container + K3d** 
         - If you get 405 Errors about SignalR, it could be due to the Gateway not working on K3d.
         - Workaround for this is to connect the frontend directly to the Dispatch API Service instead of passing through the Gateway:
         - `rad run ./frontend.bicep --parameters hostName=localhost --parameters overrideDispatchApiHostAndPort=http://localhost:8080`

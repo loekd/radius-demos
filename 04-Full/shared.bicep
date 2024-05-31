@@ -22,9 +22,9 @@ var applicationName = split(application, '/')[9]
 var kubernetesNamespace = '${environmentName}-${applicationName}'
 
 resource app 'Applications.Core/applications@2023-10-01-preview' = {
-  name: 'demo05'
+  name: 'demo04'
   properties: {
-    environment: environment
+    environment: env.id
     extensions: [
       {
         kind: 'kubernetesNamespace'
@@ -43,12 +43,46 @@ resource app 'Applications.Core/applications@2023-10-01-preview' = {
   }
 }
 
+resource env 'Applications.Core/environments@2023-10-01-preview' = {
+  name: environmentName
+  properties: {
+    //target kubernetes
+    compute: {
+      kind: 'kubernetes'
+      namespace: 'dev-demo04'
+    }
+    //register recipes using Bicep
+    recipes: {      
+      'Applications.Dapr/pubSubBrokers': {
+        pubsubRecipe: {
+          templateKind: 'bicep'
+          templatePath: 'acrradius.azurecr.io/recipes/redispubsub:0.1.0'
+        }
+      }
+
+      'Applications.Dapr/stateStores': {
+        stateStoreRecipe: {
+          templateKind: 'bicep'
+          templatePath: 'acrradius.azurecr.io/recipes/localstatestore:0.1.0'
+        }
+      }
+
+      'Applications.Core/extenders': {
+        jaegerRecipe: {
+          templateKind: 'bicep'
+          templatePath: 'acrradius.azurecr.io/recipes/jaeger:0.1.0'
+        }
+      }    
+    }
+  }
+}
+
 // Zipkin telemetry collection endpoint using 'jaeger_recipe' 
 // No resource for OTEL collectors in Radius at this time, so we are using an extender
 resource jaegerExtender 'Applications.Core/extenders@2023-10-01-preview' = {
   name: 'jaeger'
   properties: {
-    environment: environment
+    environment: env.id
     application: application
     recipe: {
       name: 'jaegerRecipe'
@@ -60,7 +94,7 @@ resource jaegerExtender 'Applications.Core/extenders@2023-10-01-preview' = {
 resource dispatch_pubsub 'Applications.Dapr/pubSubBrokers@2023-10-01-preview' = {
   name: 'dispatchpubsub'
   properties: {
-    environment: environment
+    environment: env.id
     application: application
     resourceProvisioning: 'recipe'
     recipe: {

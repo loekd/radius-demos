@@ -10,10 +10,10 @@ param application string
 param containerRegistry string = 'acrradius.azurecr.io'
 
 @description('Indicates whether to use HTTPS for the Dispatch API. (default: true for prod)')
-param useHttps bool = contains(environment, 'prod')
+param useHttps string = contains(environment, 'prod') ? 'true': 'false'
 
 @description('The host name of the application.')
-param hostName string = 'demo.loekd.com'
+param hostName string = contains(environment, 'prod') ? 'demo.loekd.com' : 'localhost'
 
 @description('The host name of the application.')
 param overrideDispatchApiHostAndPort string = ''
@@ -28,7 +28,7 @@ var applicationName = split(application, '/')[9]
 var kubernetesNamespace = '${environmentName}-${applicationName}'
 
 @description('The host and port on which the Dispatch API is exposed (through the gateway).')
-var dispatchApiHostAndPort = empty(overrideDispatchApiHostAndPort) ? useHttps ? 'https://${hostName}' : 'http://${hostName}' : overrideDispatchApiHostAndPort
+var dispatchApiHostAndPort = empty(overrideDispatchApiHostAndPort) ? useHttps == 'true' ? 'https://${hostName}' : 'http://${hostName}' : overrideDispatchApiHostAndPort
 
 @description('The port on which the frontend is exposed internally.')
 var frontendPort = 80
@@ -47,6 +47,7 @@ import kubernetes as kubernetes {
 
 // Create a ConfigMap with the frontend appsettings.json. This is mounted to the frontend container.
 // It points to the public endpoint of the Dispatch API.
+// This is currently leaking K8s details into the Radius file.
 resource configMap 'core/ConfigMap@v1' = {
   metadata: {
     name: 'frontend-scripts'

@@ -7,8 +7,8 @@ param environment string
 param application string
 
 // The backend container that is connected to the Dapr state store
-resource backend 'Applications.Core/containers@2023-10-01-preview' = {
-  name: 'backend'
+resource backend02 'Applications.Core/containers@2023-10-01-preview' = {
+  name: 'backend02'
   properties: {
     application: application
     container: {
@@ -20,9 +20,10 @@ resource backend 'Applications.Core/containers@2023-10-01-preview' = {
         }
       }
     }
+    //connection provides component name, not connection string
     connections: {
       orders: {
-        source: stateStore.id
+        source: stateStore02.id
       }
     }
     extensions: [
@@ -36,8 +37,8 @@ resource backend 'Applications.Core/containers@2023-10-01-preview' = {
 }
 
 // The Dapr state store that is connected to the backend container
-resource stateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
-  name: 'statestore'
+resource stateStore02 'Applications.Dapr/stateStores@2023-10-01-preview' = {
+  name: 'statestore02'
   properties: {
     // Provision Redis Dapr state store automatically via the default Radius Recipe
     environment: environment

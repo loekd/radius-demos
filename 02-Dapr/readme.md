@@ -50,7 +50,7 @@ You want to run this app using Radius.
     - `explorer http://localhost:8088`
     
 # Observations
-- The software doesn't need to know the actual implementation of storage and pub/sub messaging components. (thanks to Dapr)
+- The software doesn't need to know the actual implementation of storage and pub/sub messaging components. (thanks to Dapr and Radius)
 - This makes it simpler to define an application with state and messaging elements.
 
 # Cleanup
@@ -58,5 +58,6 @@ You want to run this app using Radius.
 - `rad app delete demo02 -g test`
 - `kubectl delete ns test-demo02`
 
+- `rad recipe unregister default --environment test --resource-type 'Applications.Dapr/stateStores' --group test`
 - `rad env delete test -y`
 - `rad group delete test -y`
