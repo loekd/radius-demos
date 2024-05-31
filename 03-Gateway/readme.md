@@ -49,8 +49,8 @@ Please note that currently the **Gateway doesn't work when running with K3d**. S
 
 # Cleanup
 - hit `CTRL+C` to stop the port forward, and the app
-- `rad app delete demo06 -y`
-- `kubectl delete ns test-demo06`
+- `rad app delete demo03 -y`
+- `kubectl delete ns test-demo03`
 
 - `rad env delete test -y`
 - `rad group delete test -y`

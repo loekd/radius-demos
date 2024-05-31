@@ -68,6 +68,6 @@ You want to show this app on the Radius dashboard.
 # Cleanup
 - Hit `CTRL+C` to stop port forward
 - Cleanup:
-  - `rad app delete test-demo02 -g test-test-demo02`
+  - `rad app delete test-demo05 -g test-test-demo05`
   - `kubectl delete -f ./deployment.yaml`
-  - `kubectl delete ns test-demo02`
+  - `kubectl delete ns test-demo05`

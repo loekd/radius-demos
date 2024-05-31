@@ -107,7 +107,7 @@ output result object = {
 //publish the recipe to an OCI registry:
 //rad bicep publish --file redisCacheRecipe.bicep --target br:acrradius.azurecr.io/recipes/rediscache:0.1.0
 
-//don't register the recipe as part of the environment:
-//rad recipe register default --environment dev --resource-type 'Applications.Datastores/redisCaches' --template-kind bicep --template-path acrradius.azurecr.io/recipes/rediscache:0.1.0 --group dev
+//register the recipe as part of the environment:
+//rad recipe register default --environment test --resource-type 'Applications.Datastores/redisCaches' --template-kind bicep --template-path acrradius.azurecr.io/recipes/rediscache:0.1.0 --group test
 
 

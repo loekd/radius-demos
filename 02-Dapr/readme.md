@@ -55,8 +55,8 @@ You want to run this app using Radius.
 
 # Cleanup
 - hit `CTRL+C` to stop
-- `rad app delete demo04 -g test`
-- `kubectl delete ns test-demo04`
+- `rad app delete demo02 -g test`
+- `kubectl delete ns test-demo02`
 
 - `rad env delete test -y`
 - `rad group delete test -y`

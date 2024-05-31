@@ -4,7 +4,11 @@ You want to run this app using Radius.
 
 # Run
 
-- `rad init --full`
+- Switch to the `test` workspace:
+  - `rad workspace switch dev`
+
+- Initialize a resource group, application and environment:
+  - `rad init --full`
     - fill out wizard
     - create new environment named 'test'
       - this will create a new Radius resource group called 'test'
