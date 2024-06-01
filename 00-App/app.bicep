@@ -7,7 +7,7 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
     //target kubernetes
     compute: {
       kind: 'kubernetes'
-      namespace: 'dev-demo00'
+      namespace: 'dev'
     }
     //register recipe using Bicep
     recipes: {      

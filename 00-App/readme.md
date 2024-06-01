@@ -43,8 +43,7 @@ You want to run this app using Radius.
 # Cleanup
 - hit `CTRL+C` to stop the port forward, and the app
 - `rad app delete demo00 -g dev -y`
-- `kubectl delete ns dev-demo00-demo00`
+- `kubectl delete ns dev-demo00`
 
-- `rad recipe register default --environment dev --resource-type 'Applications.Datastores/redisCaches' --group dev`
 - `rad env delete dev -y`
 - `rad group delete dev -y`
