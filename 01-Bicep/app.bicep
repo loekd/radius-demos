@@ -6,8 +6,8 @@ param application string
 @description('Specifies the environment for resources. Injected automatically by the rad CLI.')
 param environment string
 
-resource container 'Applications.Core/containers@2023-10-01-preview' = {
-  name: 'demo'
+resource container01 'Applications.Core/containers@2023-10-01-preview' = {
+  name: 'demo01'
   properties: {
     application: application //Use the injected application ID
     environment: environment //Use the injected environment ID
@@ -22,15 +22,15 @@ resource container 'Applications.Core/containers@2023-10-01-preview' = {
     // Uncomment the following code to connect to the Redis cache below
     // connections:{
     //   orders: {
-    //     source: redisCache.id
+    //     source: redisCache01.id
     //   }
     // }
   }
 }
 
 //uncomment the following code to add a Redis cache
-// resource redisCache 'Applications.Datastores/redisCaches@2023-10-01-preview' = {
-//   name: 'redis'
+// resource redisCache01 'Applications.Datastores/redisCaches@2023-10-01-preview' = {
+//   name: 'redis01'
 //   properties: {
 //     application: application
 //     environment: environment

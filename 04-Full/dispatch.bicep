@@ -1,21 +1,16 @@
 import radius as radius
 
-@description('Specifies the environment for resources.')
-param environment string
+@description('Specifies the Environment Name.')
+param environmentName string = 'test'
 
-@description('The Radius Application ID. Injected automatically by the rad CLI.')
-param application string
+@description('The Radius Application Name.')
+param applicationName string = 'demo04'
 
 @description('The container registry name (leave empty for local deployments).')
 param containerRegistry string = 'acrradius.azurecr.io'
 
 
 var dispatchApiPort = 8080
-@description('The name of the environment.')
-var environmentName = split(environment, '/')[9]
-
-@description('The name of the application.')
-var applicationName = split(application, '/')[9]
 
 @description('The k8s namespace name.')
 var kubernetesNamespace = '${environmentName}-${applicationName}'
@@ -29,8 +24,8 @@ import kubernetes as kubernetes {
 module shared 'shared.bicep' = {
   name: 'shared'
   params: {
-    environment: environment
-    application: application
+    environmentName: environmentName
+    applicationName: applicationName
   }
 }
 
@@ -38,8 +33,8 @@ module shared 'shared.bicep' = {
 resource dispatch_api 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'dispatchapi'
   properties: {
-    application: application
-    environment: environment
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     container: {
       image: empty(containerRegistry) ? 'missioncriticaldemo.dispatchapi:latest' : '${containerRegistry}/missioncriticaldemo.dispatchapi:latest'
       imagePullPolicy: empty(containerRegistry) ? 'Never' : 'IfNotPresent'
@@ -110,8 +105,8 @@ resource daprConfig 'dapr.io/Configuration@v1alpha1' = {
 resource outboxStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
   name: 'outboxstate'
   properties: {
-    environment: environment
-    application: application
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     resourceProvisioning: 'recipe'
     recipe: {
       name: 'stateStoreRecipe'
@@ -132,8 +127,8 @@ resource outboxStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
 resource inboxStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
   name: 'inboxstate'
   properties: {
-    environment: environment
-    application: application
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     resourceProvisioning: 'recipe'
     recipe: {
       name: 'stateStoreRecipe'
@@ -153,8 +148,8 @@ resource inboxStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
 resource gisStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
   name: 'gasinstorestate'
   properties: {
-    environment: environment
-    application: application
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     resourceProvisioning: 'recipe'
     recipe: {
       name: 'stateStoreRecipe'

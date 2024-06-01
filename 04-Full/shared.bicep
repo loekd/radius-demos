@@ -2,21 +2,15 @@
 
 import radius as radius
 
-@description('Specifies the environment for resources.')
-param environment string
+@description('Specifies the Environment Name.')
+param environmentName string = 'test'
 
-@description('The Radius Application ID. Injected automatically by the rad CLI.')
-param application string
+@description('The Radius Application Name.')
+param applicationName string = 'demo04'
 
-var parameters = contains(environment, 'azure') ? {
+var parameters = contains(environmentName, 'azure') ? {
   location: 'northeurope'
 } : {}
-
-@description('The name of the environment.')
-var environmentName = split(environment, '/')[9]
-
-@description('The name of the application.')
-var applicationName = split(application, '/')[9]
 
 @description('The k8s namespace name.')
 var kubernetesNamespace = '${environmentName}-${applicationName}'
@@ -49,14 +43,14 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
     //target kubernetes
     compute: {
       kind: 'kubernetes'
-      namespace: 'dev-demo04'
+      namespace: environmentName //due to a bug, Radius will append the application name here.
     }
     //register recipes using Bicep
     recipes: {      
       'Applications.Dapr/pubSubBrokers': {
         pubsubRecipe: {
           templateKind: 'bicep'
-          templatePath: 'acrradius.azurecr.io/recipes/redispubsub:0.1.0'
+          templatePath: environmentName == 'test' ? 'acrradius.azurecr.io/recipes/redispubsub:0.1.0' : 'acrradius.azurecr.io/recipes/sbpubsub:0.1.0'
         }
       }
 
@@ -83,7 +77,7 @@ resource jaegerExtender 'Applications.Core/extenders@2023-10-01-preview' = {
   name: 'jaeger'
   properties: {
     environment: env.id
-    application: application
+    application: app.id
     recipe: {
       name: 'jaegerRecipe'
     }
@@ -95,7 +89,7 @@ resource dispatch_pubsub 'Applications.Dapr/pubSubBrokers@2023-10-01-preview' = 
   name: 'dispatchpubsub'
   properties: {
     environment: env.id
-    application: application
+    application: app.id
     resourceProvisioning: 'recipe'
     recipe: {
       name: 'pubsubRecipe'
@@ -106,3 +100,5 @@ resource dispatch_pubsub 'Applications.Dapr/pubSubBrokers@2023-10-01-preview' = 
 
 output pubsub object = dispatch_pubsub
 output jaeger object = jaegerExtender
+output environment object = env
+output application object = app

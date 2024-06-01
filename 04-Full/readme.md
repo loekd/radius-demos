@@ -8,8 +8,8 @@
 
 ## Prepare 
 
-Select the test workspace.
-  - `rad workspace switch test`
+Select the 'local' workspace.
+  - `rad workspace switch local`
 
 ## Run
 
@@ -61,8 +61,15 @@ Select the test workspace.
     }
   ```
 
-- Create a new workspace for Azure
-    - `rad workspace create kubernetes prod --context aksradius`
+- List and show workspaces:
+    - `rad workspace list`
+    - `rad workspace show`
+
+- Create a new workspace for Azure AKS if it does not yet exist:
+    - `rad workspace create kubernetes aks --context aksradius`
+
+- Or switch to the aks workspace:
+  - `rad workspace switch aks`
 
 - Get credentials for an AKS cluster
     - `az aks get-credentials -g rg-radius -n aksradius` (replace with your details)
@@ -95,7 +102,7 @@ Select the test workspace.
 
 - Deploy plant API
     - `kubectl config use-context aksradius` (if needed)
-    - `rad workspace switch prod` (if needed)
+    - `rad workspace switch aks` (if needed)
     - `rad deploy ./plant.bicep`
 - Deploy dispatch api
     - `rad deploy ./dispatch.bicep`

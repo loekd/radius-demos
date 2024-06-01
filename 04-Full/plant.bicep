@@ -1,19 +1,15 @@
 import radius as radius
 
-@description('Specifies the environment for resources.')
-param environment string
+@description('Specifies the Environment Name.')
+param environmentName string = 'test'
 
-@description('The Radius Application ID. Injected automatically by the rad CLI.')
-param application string
+@description('The Radius Application Name.')
+param applicationName string = 'demo04'
 
 @description('The container registry name (leave empty for local deployments).')
 param containerRegistry string = 'acrradius.azurecr.io'
 
-@description('The name of the environment.')
-var environmentName = split(environment, '/')[9]
 
-@description('The name of the application.')
-var applicationName = split(application, '/')[9]
 
 @description('The k8s namespace name.')
 var kubernetesNamespace = '${environmentName}-${applicationName}'
@@ -24,8 +20,8 @@ var plantApiPort = 8082
 module shared 'shared.bicep' = {
   name: 'shared'
   params: {
-    environment: environment
-    application: application
+    environmentName: environmentName
+    applicationName: applicationName
   }
 }
 
@@ -57,8 +53,8 @@ resource daprConfig 'dapr.io/Configuration@v1alpha1' = {
 resource plant_api 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'plantapi'
   properties: {
-    application: application
-    environment: environment
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     container: {
       image: empty(containerRegistry) ? 'missioncriticaldemo.plantapi:latest' : '${containerRegistry}/missioncriticaldemo.plantapi:latest'
       imagePullPolicy: empty(containerRegistry) ? 'Never' : 'IfNotPresent'
@@ -105,8 +101,8 @@ resource plant_api 'Applications.Core/containers@2023-10-01-preview' = {
 resource plant_state 'Applications.Dapr/stateStores@2023-10-01-preview' = {
   name: 'plantstate'
   properties: {
-    environment: environment
-    application: application
+    environment: shared.outputs.environment.id
+    application: shared.outputs.application.id
     resourceProvisioning: 'recipe'
     recipe: {
       name: 'stateStoreRecipe'

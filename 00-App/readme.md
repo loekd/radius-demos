@@ -4,7 +4,7 @@ You want to run this app using Radius.
 
 # Run
 
-- Edit `~/.rad/config.yaml` to make sure there's a workspace called 'dev' and one called 'test'.
+- Edit `~/.rad/config.yaml` to make sure there's a workspace called 'dev' and one called 'local'.
   ```yaml
   workspaces:
     default: test
@@ -15,7 +15,7 @@ You want to run this app using Radius.
                 kind: kubernetes
             environment: /planes/radius/local/resourceGroups/dev/providers/Applications.Core/environments/dev
             scope: /planes/radius/local/resourceGroups/dev
-        test:
+        local:
             connection:
                 context: k3d-k3s-default
                 kind: kubernetes

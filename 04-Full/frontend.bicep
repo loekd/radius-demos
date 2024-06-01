@@ -1,28 +1,22 @@
 import radius as radius
 
-@description('Specifies the environment for resources.')
-param environment string
+@description('Specifies the Environment Name.')
+param environmentName string = 'test'
 
-@description('The Radius Application ID. Injected automatically by the rad CLI.')
-param application string
+@description('The Radius Application Name.')
+param applicationName string = 'demo04'
 
 @description('The container registry name (leave empty for local deployments).')
 param containerRegistry string = 'acrradius.azurecr.io'
 
 @description('Indicates whether to use HTTPS for the Dispatch API. (default: true for prod)')
-param useHttps string = contains(environment, 'prod') ? 'true': 'false'
+param useHttps string = contains(environmentName, 'prod') ? 'true': 'false'
 
 @description('The host name of the application.')
-param hostName string = contains(environment, 'prod') ? 'demo.loekd.com' : 'localhost'
+param hostName string = contains(environmentName, 'prod') ? 'demo.loekd.com' : 'localhost'
 
 @description('The host name of the application.')
 param overrideDispatchApiHostAndPort string = ''
-
-@description('The name of the environment.')
-var environmentName = split(environment, '/')[9]
-
-@description('The name of the application.')
-var applicationName = split(application, '/')[9]
 
 @description('The k8s namespace name.')
 var kubernetesNamespace = '${environmentName}-${applicationName}'
@@ -43,6 +37,15 @@ var frontendContainerName = 'frontend'
 import kubernetes as kubernetes {
   kubeConfig: ''
   namespace: kubernetesNamespace
+}
+
+//Deploy shared resources like Jaeger and PubSub
+module shared 'shared.bicep' = {
+  name: 'shared'
+  params: {
+    environmentName: environmentName
+    applicationName: applicationName
+  }
 }
 
 // Create a ConfigMap with the frontend appsettings.json. This is mounted to the frontend container.
@@ -75,8 +78,8 @@ resource configMap 'core/ConfigMap@v1' = {
 resource frontend 'Applications.Core/containers@2023-10-01-preview' = {
   name: frontendContainerName
   properties: {
-    application: application
-    environment: environment
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     container: {
       image: empty(containerRegistry) ? 'missioncriticaldemo.frontend:latest' : '${containerRegistry}/missioncriticaldemo.frontend:latest'
       imagePullPolicy: empty(containerRegistry) ? 'Never' : 'Always'
@@ -126,8 +129,8 @@ resource dispatch_api 'Applications.Core/containers@2023-10-01-preview' existing
 resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
   name: 'gateway'
   properties: {
-    application: application 
-    environment: environment
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     hostname: {
       fullyQualifiedHostname: hostName
     }
@@ -156,8 +159,8 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
 resource appCert 'Applications.Core/secretStores@2023-10-01-preview' = {
   name: 'appcert'
   properties:{
-    application: application
-    environment: environment
+    application: shared.outputs.application.id
+    environment: shared.outputs.environment.id
     type: 'certificate'
     data: {
       'tls.key': {
