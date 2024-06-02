@@ -37,28 +37,31 @@ resource backend02 'Applications.Core/containers@2023-10-01-preview' = {
 }
 
 // The Dapr state store that is connected to the backend container
-// resource stateStore02 'Applications.Dapr/stateStores@2023-10-01-preview' = {
-//   name: 'statestore02'
-//   properties: {
-//     // Provision Redis Dapr state store automatically via the default Radius Recipe
-//     environment: environment
-//     application: application
-//   }
-// }
-
 resource stateStore02 'Applications.Dapr/stateStores@2023-10-01-preview' = {
-  name: 'stateStore02'
+  name: 'statestore02'
   properties: {
+    // Provision Redis Dapr state store automatically via Radius Recipe
     environment: environment
     application: application
-    // Provision Redis Dapr state store as Cosmos DB in Azure (fails)
-    resourceProvisioning: 'recipe'
-    recipe: {     
-      name: 'cloudStateStoreRecipe'
-      parameters: {
-        databaseName: 'orders'
-        appId: 'backend02'
-      }
-    }
   }
 }
+
+// Or provision Cosmos DB as Dapr state store, assuming rad init --full was configured with cloud details.
+// Or run 'rad credential register azure' and 'rad env update --azure-subscription-id <subscription-id> --azure-resource-group <azure rg>' to configure Azure.
+
+// resource stateStore02 'Applications.Dapr/stateStores@2023-10-01-preview' = {
+//   name: 'cos-ordersdemo02'
+//   properties: {
+//     environment: environment
+//     application: application
+//     // Provision Redis Dapr state store as Cosmos DB in Azure
+//     resourceProvisioning: 'recipe'
+//     recipe: {     
+//       name: 'cloudStateStoreRecipe'
+//       parameters: {
+//         databaseName: 'orders'
+//         appId: 'backend02'
+//       }
+//     }
+//   }
+// }

@@ -5,7 +5,7 @@
 param context object
 
 @description('The geo-location where the resource lives.')
-param location string = resourceGroup().location
+param location string = 'northeurope'
 
 @description('Sets this Dapr State Store as the actor state store. Only one Dapr State Store can be set as the actor state store. Defaults to false.')
 param actorStateStore bool = false

@@ -5,7 +5,7 @@
 param context object
 
 @description('The geo-location where the resource lives.')
-param location string = resourceGroup().location
+param location string = 'northeurope'
 
 @description('Sets this Dapr State Store as the actor state store. Only one Dapr State Store can be set as the actor state store. Defaults to false.')
 param actorStateStore bool = false
@@ -19,23 +19,8 @@ param databaseName string = context.resource.name
 @description('The appId to scope to')
 param appId string
 
-// @description('The shard key for the collection.')
-// param collectionIndexes array = [
-//   {
-//     key: {
-//       keys: [
-//         '_id'
-//       ]
-//     }
-//   }
-//   {
-//     key: {
-//       keys: [
-//         '$**'
-//       ]
-//     }
-//   }
-// ]
+@description('The unique seed used to generate resource names.')
+param uniqueSeed string = uniqueString('${resourceGroup().id}-${accountName}-${appId}')
 
 @description('Maximum autoscale throughput for the database shared with up to 25 collections')
 @minValue(1000)
@@ -60,7 +45,7 @@ var daprVersion = 'v1'
 
 // Cosmos DB Account
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
-  name: accountName
+  name: 'cos-${uniqueSeed}'
   location: location
   kind: 'GlobalDocumentDB'
   properties: {

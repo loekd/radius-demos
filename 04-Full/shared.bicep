@@ -8,6 +8,12 @@ param environmentName string = 'test'
 @description('The Radius Application Name.')
 param applicationName string = 'demo04'
 
+var providers = environmentName == 'prod' ? {
+  azure: {
+    scope: '/subscriptions/6eb94a2c-34ac-45db-911f-c21438b4939c/resourceGroups/rg-radius'
+  }
+} : {}
+
 var parameters = contains(environmentName, 'azure') ? {
   location: 'northeurope'
 } : {}
@@ -49,6 +55,8 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
       kind: 'kubernetes'
       namespace: environmentName //due to a bug, Radius will append the application name here.
     }
+    //target azure in prod
+    providers: providers
     //register recipes using Bicep
     recipes: {      
       'Applications.Dapr/pubSubBrokers': {
@@ -105,8 +113,7 @@ resource dispatch_pubsub 'Applications.Dapr/pubSubBrokers@2023-10-01-preview' = 
     application: app.id
     resourceProvisioning: 'recipe'
     recipe: {
-      // name: environmentName == 'prod' ? 'cloudPubsubRecipe' : 'localPubsubRecipe' //Service Bus is currently broken. :(
-      name: 'localPubsubRecipe'
+      name: environmentName == 'prod' ? 'cloudPubsubRecipe' : 'localPubsubRecipe'      
       parameters: parameters
     }
   }
