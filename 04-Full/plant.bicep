@@ -105,7 +105,8 @@ resource plant_state 'Applications.Dapr/stateStores@2023-10-01-preview' = {
     application: shared.outputs.application.id
     resourceProvisioning: 'recipe'
     recipe: {
-      name: 'stateStoreRecipe'
+      // name: shared.outputs.stateStoreRecipeName //CosmosDb doesn't work at this time
+      name: 'localStateStoreRecipe'
       parameters: {
         databaseName: 'plant'
         appId: 'plantapi'

@@ -15,6 +15,10 @@ var parameters = contains(environmentName, 'azure') ? {
 @description('The k8s namespace name.')
 var kubernetesNamespace = '${environmentName}-${applicationName}'
 
+var pubSubRecipeName = environmentName == 'prod' ? 'cloudPubsubRecipe' : 'localPubsubRecipe'
+var stateStoreRecipeName = environmentName == 'prod' ? 'cloudStateStoreRecipe' : 'localStateStoreRecipe'
+
+
 resource app 'Applications.Core/applications@2023-10-01-preview' = {
   name: 'demo04'
   properties: {
@@ -48,16 +52,24 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
     //register recipes using Bicep
     recipes: {      
       'Applications.Dapr/pubSubBrokers': {
-        pubsubRecipe: {
+        localPubsubRecipe: {
           templateKind: 'bicep'
-          templatePath: environmentName == 'test' ? 'acrradius.azurecr.io/recipes/redispubsub:0.1.0' : 'acrradius.azurecr.io/recipes/sbpubsub:0.1.0'
+          templatePath: 'acrradius.azurecr.io/recipes/redispubsub:0.1.0'
+        }
+        cloudPubsubRecipe: {
+          templateKind: 'bicep'
+          templatePath: 'acrradius.azurecr.io/recipes/sbpubsub:0.1.0'
         }
       }
 
       'Applications.Dapr/stateStores': {
-        stateStoreRecipe: {
+        localStateStoreRecipe: {
           templateKind: 'bicep'
           templatePath: 'acrradius.azurecr.io/recipes/localstatestore:0.1.0'
+        }
+        cloudStateStoreRecipe: {
+          templateKind: 'bicep'
+          templatePath: 'acrradius.azurecr.io/recipes/cosmosstatestore:0.1.0'
         }
       }
 
@@ -66,6 +78,7 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
           templateKind: 'bicep'
           templatePath: 'acrradius.azurecr.io/recipes/jaeger:0.1.0'
         }
+        //TODO: OTEL collector recipe for cloud
       }    
     }
   }
@@ -92,7 +105,8 @@ resource dispatch_pubsub 'Applications.Dapr/pubSubBrokers@2023-10-01-preview' = 
     application: app.id
     resourceProvisioning: 'recipe'
     recipe: {
-      name: 'pubsubRecipe'
+      // name: environmentName == 'prod' ? 'cloudPubsubRecipe' : 'localPubsubRecipe' //Service Bus is currently broken. :(
+      name: 'localPubsubRecipe'
       parameters: parameters
     }
   }
@@ -102,3 +116,5 @@ output pubsub object = dispatch_pubsub
 output jaeger object = jaegerExtender
 output environment object = env
 output application object = app
+output stateStoreRecipeName string = stateStoreRecipeName
+output pubSubRecipeName string = pubSubRecipeName

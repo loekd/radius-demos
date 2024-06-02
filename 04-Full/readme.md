@@ -103,13 +103,13 @@ Select the 'local' workspace.
 - Deploy plant API
     - `kubectl config use-context aksradius` (if needed)
     - `rad workspace switch aks` (if needed)
-    - `rad deploy ./plant.bicep`
+    - `rad deploy ./plant.bicep --parameters environmentName=prod`
 - Deploy dispatch api
-    - `rad deploy ./dispatch.bicep`
+    - `rad deploy ./dispatch.bicep --parameters environmentName=prod`
 
 - Run frontend:        
     - Public AKS IP Address:        
-        - `rad run ./frontend.bicep --parameters hostName=demo.loekd.com` (access trough gateway)     
+        - `rad run ./frontend.bicep --parameters environmentName=prod --parameters hostName=demo.loekd.com` (access trough gateway)     
     - Please note that the Gateway currently breaks signalR after 15s
         - fix: `kubectl patch httpproxy dispatchapi -n prod-demo05 --type='json' -p='[{"op": "add", "path": "/spec/routes/0/enableWebsockets", "value": true}]'`
         - This can block redeployments, so delete the custom resource if you see any errors about 'patch httpproxy':

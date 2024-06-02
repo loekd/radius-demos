@@ -1,5 +1,5 @@
 //Azure Cosmos DB with SQL or MongoDB API
-//Don't use this, because multi-partition queries are not supported using the GO SDK.
+//Currently broken
 
 @description('Radius-provided object containing information about the resouce calling the Recipe')
 param context object
@@ -18,24 +18,6 @@ param databaseName string = context.resource.name
 
 @description('The appId to scope to')
 param appId string
-
-// @description('The shard key for the collection.')
-// param collectionIndexes array = [
-//   {
-//     key: {
-//       keys: [
-//         '_id'
-//       ]
-//     }
-//   }
-//   {
-//     key: {
-//       keys: [
-//         '$**'
-//       ]
-//     }
-//   }
-// ]
 
 @description('Maximum autoscale throughput for the database shared with up to 25 collections')
 @minValue(1000)
@@ -181,7 +163,7 @@ output result object = {
 
 //deploying the recipe can be done by this command:
 //rad bicep publish --file cosmos_statestore_recipe.bicep --target br:acrradius.azurecr.io/recipes/cosmosstatestore:0.1.0
-//rad recipe register cloudStateStoreRecipe --environment azure --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/cosmosstatestore:0.1.0
+//rad recipe register cloudStateStoreRecipe --environment test --group test --resource-type 'Applications.Dapr/stateStores' --template-kind bicep --template-path acrradius.azurecr.io/recipes/cosmosstatestore:0.1.0
 
 
 

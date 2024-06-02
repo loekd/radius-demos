@@ -28,7 +28,11 @@ resource container01 'Applications.Core/containers@2023-10-01-preview' = {
   }
 }
 
-//uncomment the following code to add a Redis cache
+// uncomment the following code to add a Redis cache
+// don't forget to publish and register it using the cli: 
+// rad bicep publish --file redisCacheRecipe.bicep --target br:acrradius.azurecr.io/recipes/rediscache:0.1.0
+// rad recipe register default --environment test --resource-type 'Applications.Datastores/redisCaches' --template-kind bicep --template-path acrradius.azurecr.io/recipes/rediscache:0.1.0 --group test
+
 // resource redisCache01 'Applications.Datastores/redisCaches@2023-10-01-preview' = {
 //   name: 'redis01'
 //   properties: {

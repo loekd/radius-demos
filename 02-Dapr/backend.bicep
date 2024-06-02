@@ -37,11 +37,28 @@ resource backend02 'Applications.Core/containers@2023-10-01-preview' = {
 }
 
 // The Dapr state store that is connected to the backend container
+// resource stateStore02 'Applications.Dapr/stateStores@2023-10-01-preview' = {
+//   name: 'statestore02'
+//   properties: {
+//     // Provision Redis Dapr state store automatically via the default Radius Recipe
+//     environment: environment
+//     application: application
+//   }
+// }
+
 resource stateStore02 'Applications.Dapr/stateStores@2023-10-01-preview' = {
-  name: 'statestore02'
+  name: 'stateStore02'
   properties: {
-    // Provision Redis Dapr state store automatically via the default Radius Recipe
     environment: environment
     application: application
+    // Provision Redis Dapr state store as Cosmos DB in Azure (fails)
+    resourceProvisioning: 'recipe'
+    recipe: {     
+      name: 'cloudStateStoreRecipe'
+      parameters: {
+        databaseName: 'orders'
+        appId: 'backend02'
+      }
+    }
   }
 }

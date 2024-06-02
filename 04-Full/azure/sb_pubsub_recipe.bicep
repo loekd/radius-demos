@@ -30,7 +30,7 @@ var daprVersion = 'v1'
 //-----------------------------------------------------------------------------
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
-  name: 'sb-${uniqueString(uniqueSeed)}'
+  name: 'sb-${context.resource.name}'
   location: location
   sku: {
     name: 'Standard'
@@ -38,7 +38,7 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
   }
 
   resource authorizationRule 'AuthorizationRules' = {
-    name: 'eshopondaprpubsub'
+    name: 'authRule'
     properties: {
       rights: [
         'Listen'

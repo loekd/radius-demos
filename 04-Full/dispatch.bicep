@@ -109,7 +109,7 @@ resource outboxStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
     environment: shared.outputs.environment.id
     resourceProvisioning: 'recipe'
     recipe: {
-      name: 'stateStoreRecipe'
+      name: 'localStateStoreRecipe'
       parameters: {
         databaseName: 'dispatch'
         replicaset: true
@@ -131,7 +131,7 @@ resource inboxStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
     environment: shared.outputs.environment.id
     resourceProvisioning: 'recipe'
     recipe: {
-      name: 'stateStoreRecipe'
+      name: 'localStateStoreRecipe'
       parameters: {
         databaseName: 'dispatch'
         replicaset: true
@@ -152,7 +152,7 @@ resource gisStateStore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
     environment: shared.outputs.environment.id
     resourceProvisioning: 'recipe'
     recipe: {
-      name: 'stateStoreRecipe'
+      name: 'localStateStoreRecipe'
       parameters: {
         databaseName: 'dispatch'
         replicaset: false
