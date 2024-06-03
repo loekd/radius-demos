@@ -1,4 +1,3 @@
-cd C:\Temp\radius\02-Dapr
 rad workspace switch local
 rad group create test
 rad deploy ./app.bicep --group test

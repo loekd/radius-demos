@@ -1,7 +1,3 @@
-#folder
-pushd
-cd C:\Temp\radius\00-App\
-
 #workspaces
 rad workspace list
 rad workspace show

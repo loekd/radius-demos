@@ -1,4 +1,3 @@
-cd C:\Temp\radius\04-Full
 rad workspace switch local
 rad group create test
 

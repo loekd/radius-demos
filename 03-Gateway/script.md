@@ -1,4 +1,3 @@
-cd C:\Temp\radius\03-Gateway
 rad workspace switch local
 rad group create test
 rad deploy ./app.bicep --group test

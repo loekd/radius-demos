@@ -1,4 +1,3 @@
-cd C:\Temp\radius\04-Full
 rad workspace list
 rad workspace switch aks
 rad group create prod

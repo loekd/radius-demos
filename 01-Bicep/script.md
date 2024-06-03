@@ -1,5 +1,3 @@
-cd C:\Temp\radius\01-Bicep
-
 #select workspace
 rad workspace switch local
 
