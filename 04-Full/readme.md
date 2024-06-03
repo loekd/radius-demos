@@ -32,15 +32,15 @@ Select the 'local' workspace.
         - Workaround for this is to connect the frontend directly to the Dispatch API Service instead of passing through the Gateway:
         - `rad run ./frontend.bicep --parameters hostName=localhost --parameters overrideDispatchApiHostAndPort=http://localhost:8080`
     - **Bug** - Please note that the Gateway breaks signalR after 15s
-        - fix: `kubectl patch httpproxy dispatchapi -n test-demo05 --type='json' -p='[{"op": "add", "path": "/spec/routes/0/enableWebsockets", "value": true}]'`
+        - fix: `kubectl patch httpproxy dispatchapi -n test-demo04 --type='json' -p='[{"op": "add", "path": "/spec/routes/0/enableWebsockets", "value": true}]'`
         - This can block redeployments, so delete the custom resource if you see any errors about 'patch httpproxy' during deloyment:
-        - `kubectl delete httpproxy dispatchapi -n test-demo05`
+        - `kubectl delete httpproxy dispatchapi -n test-demo04`
 - Explore the Frontend:
     - `explorer http://localhost`
 - Explore the Radius Dashboard:
     - `explorer http://localhost:7007`
 - Explore telemetry in Jaeger:
-    - `kubectl port-forward services/jaeger-dxvmbpocxv4js 16686:16686 9411:9411 14250:14250 -n prod-demo05`
+    - `kubectl port-forward services/jaeger-dxvmbpocxv4js 16686:16686 9411:9411 14250:14250 -n prod-demo04`
     - `explorer http://localhost:16686`
 
 # Azure
