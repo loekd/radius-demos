@@ -8,9 +8,6 @@ rad group create test
 rad init --full
 rad run ./app.bicep --group test
 
-#clean
-rad app delete demo01 -y
-
 #Uncomment database resource and connection!
 
 #run app again

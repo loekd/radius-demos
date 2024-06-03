@@ -7,6 +7,8 @@ rad env show prod -o json
 cls
 #rad deploy ./frontend.bicep --parameters environmentName=prod --parameters hostName=demo.loekd.com
 
+#connectivity
+
 kubectl config use-context aksradius-admin
 kubectl config set-context --current --namespace=prod-demo04
 
