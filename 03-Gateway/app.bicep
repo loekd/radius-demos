@@ -1,16 +1,10 @@
 import radius as radius
 
-@description('The Radius Application ID. Injected automatically by the rad CLI.')
-param application string
-
-@description('Specifies the environment for resources. Injected automatically by the rad CLI.')
-param environment string
-
 resource nginx 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'nginx'
   properties: {
-    application: application
-    environment: environment
+    application: app.id
+    environment: env.id
     container: {
       image: 'nginx'      
       ports: {
@@ -25,8 +19,8 @@ resource nginx 'Applications.Core/containers@2023-10-01-preview' = {
 resource green 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'green'
   properties: {
-    application: application
-    environment: environment
+    application: app.id
+    environment: env.id
     container: {
       image: 'xpiritbv/bluegreen:green'
       env: {
@@ -47,8 +41,8 @@ resource green 'Applications.Core/containers@2023-10-01-preview' = {
 resource blue 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'blue'
   properties: {
-    application: application
-    environment: environment
+    application: app.id
+    environment: env.id
     container: {
       image: 'xpiritbv/bluegreen:blue'
       env: {
@@ -70,8 +64,8 @@ resource blue 'Applications.Core/containers@2023-10-01-preview' = {
 resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
   name: 'buggy-gateway'
   properties: {
-    application: application 
-    environment: environment
+    application: app.id
+    environment: env.id
     internal: true
     hostname: {
       fullyQualifiedHostname: 'localhost'
@@ -94,3 +88,23 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
   }
 }
 
+
+//define explicit radius environment
+resource env 'Applications.Core/environments@2023-10-01-preview' = {
+  name: 'test'
+  properties: {
+    //target kubernetes
+    compute: {
+      kind: 'kubernetes'
+      namespace: 'test'
+    }   
+  }
+}
+
+//define explicit radius application
+resource app 'Applications.Core/applications@2023-10-01-preview' = {
+  name: 'demo03'
+  properties: {
+    environment: env.id
+  }
+}

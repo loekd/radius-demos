@@ -1,6 +1,4 @@
-//Azure Cosmos DB with SQL or MongoDB API
-//Currently broken
-
+//Recipe for Azure Cosmos DB as Dapr State Store 
 @description('Radius-provided object containing information about the resouce calling the Recipe')
 param context object
 
