@@ -43,6 +43,10 @@ resource stateStore02 'Applications.Dapr/stateStores@2023-10-01-preview' = {
     // Provision Redis Dapr state store automatically via Radius Recipe
     environment: environment
     application: application
+    resourceProvisioning: 'recipe'
+    recipe: {     
+      name: 'default'
+    }
   }
 }
 

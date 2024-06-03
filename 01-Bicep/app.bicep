@@ -13,6 +13,7 @@ resource container01 'Applications.Core/containers@2023-10-01-preview' = {
     environment: environment //Use the injected environment ID
     container: {
       image: 'ghcr.io/radius-project/samples/demo:latest'
+      imagePullPolicy: 'IfNotPresent'
       ports: {
         web: {
           containerPort: 3000

@@ -49,6 +49,7 @@ resource redis 'apps/Deployment@v1' = {
             // This container is the running redis instance.
             name: 'redis'
             image: 'redis'
+            imagePullPolicy: 'IfNotPresent'
             ports: [
               {
                 containerPort: 6379
