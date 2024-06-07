@@ -68,7 +68,7 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
     environment: env.id
     internal: true
     hostname: {
-      fullyQualifiedHostname: 'localhost'
+      fullyQualifiedHostname: 'test.loekd.com'
     }
     routes: [
       {

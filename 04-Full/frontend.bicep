@@ -164,10 +164,10 @@ resource appCert 'Applications.Core/secretStores@2023-10-01-preview' = {
     type: 'certificate'
     data: {
       'tls.key': {
-        value: loadTextContent('privkey.pem')
+        value: loadTextContent('./certificates/privkey.pem')
       }
       'tls.crt': {
-        value: loadTextContent('fullchain.pem')
+        value: loadTextContent('./certificates/fullchain.pem')
       }
     }
   }

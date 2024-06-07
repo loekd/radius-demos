@@ -21,7 +21,7 @@ import kubernetes as kubernetes {
   kubeConfig: ''
   namespace: context.runtime.kubernetes.namespace
 }
-
+//kubernetes deployment for Redis cache
 resource redis 'apps/Deployment@v1' = {
   metadata: {
     name: 'redis-${uniqueString(context.resource.id)}'
@@ -72,7 +72,7 @@ resource redis 'apps/Deployment@v1' = {
     }
   }
 }
-
+//kubernetes service for cache connectivity
 resource svc 'core/Service@v1' = {
   metadata: {
     name: 'redis-${uniqueString(context.resource.id)}'
@@ -90,11 +90,8 @@ resource svc 'core/Service@v1' = {
     ]
   }
 }
-
+//required return values for Radius (connection)
 output result object = {
-  // This workaround is needed because the deployment engine omits Kubernetes resources from its output.
-  // This allows Kubernetes resources to be cleaned up when the resource is deleted.
-  // Once this gap is addressed, users won't need to do this.
   resources: [
     '/planes/kubernetes/local/namespaces/${svc.metadata.namespace}/providers/core/Service/${svc.metadata.name}'
     '/planes/kubernetes/local/namespaces/${redis.metadata.namespace}/providers/apps/Deployment/${redis.metadata.name}'
