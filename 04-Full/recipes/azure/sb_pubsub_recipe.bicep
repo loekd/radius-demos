@@ -10,7 +10,7 @@ param context object
 param location string = 'northeurope'
 
 @description('The unique seed used to generate resource names.')
-param uniqueSeed string = resourceGroup().id
+param uniqueSeed string = uniqueString('${resourceGroup().id}')
 
 @description('The user-defined tags that will be applied to the resource. Default is null')
 param tags object = {}
@@ -30,7 +30,7 @@ var daprVersion = 'v1'
 //-----------------------------------------------------------------------------
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
-  name: 'sb-${context.resource.name}'
+  name: 'sb-${uniqueSeed}'
   location: location
   sku: {
     name: 'Standard'

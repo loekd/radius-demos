@@ -27,6 +27,8 @@ param uniqueSeed string = uniqueString('${resourceGroup().id}-${accountName}-${a
 @maxValue(1000000)
 param sharedAutoscaleMaxThroughput int = 1000
 
+param enableFreeTier bool = false
+
 @description('The user-defined tags that will be applied to the resource. Default is null')
 param tags object = {}
 
@@ -54,7 +56,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
         failoverPriority: 0
       } ]
     databaseAccountOfferType: 'Standard'
-    enableFreeTier: true
+    enableFreeTier: enableFreeTier
     capabilities: []
   }
   tags: union(tags, radiusTags)

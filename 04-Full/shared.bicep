@@ -23,6 +23,7 @@ var kubernetesNamespace = '${environmentName}-${applicationName}'
 
 var pubSubRecipeName = environmentName == 'prod' ? 'cloudPubsubRecipe' : 'localPubsubRecipe'
 var stateStoreRecipeName = environmentName == 'prod' ? 'cloudStateStoreRecipe' : 'localStateStoreRecipe'
+var otelRecipeName = environmentName == 'prod' ? 'otlpCollectorRecipe' : 'jaegerRecipe'
 
 
 resource app 'Applications.Core/applications@2023-10-01-preview' = {
@@ -50,12 +51,10 @@ resource app 'Applications.Core/applications@2023-10-01-preview' = {
 resource env 'Applications.Core/environments@2023-10-01-preview' = {
   name: environmentName
   properties: {
-    //target kubernetes
     compute: {
       kind: 'kubernetes'
       namespace: environmentName //due to a bug, Radius will append the application name here.
     }
-    //target azure in prod
     providers: providers
     //register recipes using Bicep
     recipes: {      
@@ -73,7 +72,7 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
       'Applications.Dapr/stateStores': {
         localStateStoreRecipe: {
           templateKind: 'bicep'
-          templatePath: 'acrradius.azurecr.io/recipes/localstatestore:0.1.0'
+          templatePath: 'acrradius.azurecr.io/recipes/localstatestore:0.1.2'
         }
         cloudStateStoreRecipe: {
           templateKind: 'bicep'
@@ -86,21 +85,24 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
           templateKind: 'bicep'
           templatePath: 'acrradius.azurecr.io/recipes/jaeger:0.1.0'
         }
-        //TODO: OTEL collector recipe for cloud
+        otlpCollectorRecipe: {
+          templateKind: 'bicep'
+          templatePath: 'acrradius.azurecr.io/recipes/otlp:0.1.0'
+        }
       }    
     }
   }
 }
 
-// Zipkin telemetry collection endpoint using 'jaeger_recipe' 
+// Zipkin telemetry collection endpoint using otelRecipeName
 // No resource for OTEL collectors in Radius at this time, so we are using an extender
-resource jaegerExtender 'Applications.Core/extenders@2023-10-01-preview' = {
-  name: 'jaeger'
+resource otelExtender 'Applications.Core/extenders@2023-10-01-preview' = {
+  name: 'otel'
   properties: {
     environment: env.id
     application: app.id
     recipe: {
-      name: 'jaegerRecipe'
+      name: otelRecipeName
     }
   }
 }
@@ -113,14 +115,14 @@ resource dispatch_pubsub 'Applications.Dapr/pubSubBrokers@2023-10-01-preview' = 
     application: app.id
     resourceProvisioning: 'recipe'
     recipe: {
-      name: environmentName == 'prod' ? 'cloudPubsubRecipe' : 'localPubsubRecipe'      
+      name: pubSubRecipeName      
       parameters: parameters
     }
   }
 }
 
 output pubsub object = dispatch_pubsub
-output jaeger object = jaegerExtender
+output jaeger object = otelExtender
 output environment object = env
 output application object = app
 output stateStoreRecipeName string = stateStoreRecipeName

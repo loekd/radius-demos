@@ -10,13 +10,12 @@ resource env 'Applications.Core/environments@2023-10-01-preview' = {
     }
     recipes: {
       //register recipe using Bicep
-
-      //   'Applications.Datastores/redisCaches': {
-      //     default: {
-      //       templateKind: 'bicep'
-      //       templatePath: 'acrradius.azurecr.io/recipes/rediscache:0.1.0'
-      //     }
-      //   }    
+      'Applications.Datastores/redisCaches': {
+        default: {
+          templateKind: 'bicep'
+          templatePath: 'acrradius.azurecr.io/recipes/rediscache:0.1.0'
+        }
+      }
     }
   }
 }
@@ -44,25 +43,22 @@ resource container01 'Applications.Core/containers@2023-10-01-preview' = {
         }
       }
     }
-    connections: {      
-        // orders: {
-        //   source: redisCache01.id
-        // }
+    connections: {
+      orders: {
+        source: redisCache01.id
+      }
     }
   }
 }
 
-// uncomment the following code to add a Redis cache
-// resource redisCache01 'Applications.Datastores/redisCaches@2023-10-01-preview' = {
-//   name: 'redis01'
-//   properties: {
-//     application: app.id
-//     environment: env.id
-//     recipe: {
-//       name: 'default'
-//     }
-//   }
-// }
-
-// don't forget to publish and register it using the cli: 
-// rad bicep publish --file redisCacheRecipe.bicep --target br:acrradius.azurecr.io/recipes/rediscache:0.1.0
+// add a Redis cache using a recipe
+resource redisCache01 'Applications.Datastores/redisCaches@2023-10-01-preview' = {
+  name: 'redis01'
+  properties: {
+    application: app.id
+    environment: env.id
+    recipe: {
+      name: 'default'
+    }
+  }
+}
