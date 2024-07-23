@@ -62,7 +62,7 @@ resource blue 'Applications.Core/containers@2023-10-01-preview' = {
   
 
 resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
-  name: 'buggy-gateway'
+  name: 'gateway01'
   properties: {
     application: app.id
     environment: env.id
