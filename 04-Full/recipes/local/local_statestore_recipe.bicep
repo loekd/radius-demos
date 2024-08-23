@@ -24,11 +24,11 @@ param replicaset bool = false
 @description('The appId to scope to')
 param appId string
 
-import radius as radius
-import kubernetes as kubernetes {
+extension radius
+extension kubernetes with {
   kubeConfig: ''
   namespace: context.runtime.kubernetes.namespace
-}
+} as kubernetes
 
 var daprType = 'state.mongodb'
 var daprVersion = 'v1'

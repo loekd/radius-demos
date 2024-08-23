@@ -1,4 +1,4 @@
-import radius as radius
+extension radius
 
 resource nginx 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'nginx'

@@ -1,4 +1,9 @@
-import radius as radius
+extension radius
+// import the kubernetes module
+extension kubernetes with {
+  kubeConfig: ''
+  namespace: kubernetesNamespace
+} as kubernetes
 
 @description('Specifies the Environment Name.')
 param environmentName string = 'test'
@@ -32,12 +37,6 @@ var volumeName = 'scripts'
 
 @description('The name of the frontend container.')
 var frontendContainerName = 'frontend'
-
-// import the kubernetes module
-import kubernetes as kubernetes {
-  kubeConfig: ''
-  namespace: kubernetesNamespace
-}
 
 //Deploy shared resources like Jaeger and PubSub
 module shared 'shared.bicep' = {
@@ -142,10 +141,12 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
       {
         path: '/api' //Dispatch REST API
         destination: 'http://${dispatch_api.name}:${dispatch_api.properties.container.ports.web.containerPort}'
+        enableWebsockets: true
       }
       {
         path: '/dispatchhub' //Dispatch websocket
         destination: 'http://${dispatch_api.name}:${dispatch_api.properties.container.ports.web.containerPort}'
+        enableWebsockets: true
       }      
       {
         path: '/' //frontend index.html

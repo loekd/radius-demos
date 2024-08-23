@@ -16,9 +16,9 @@ Select the 'local' workspace.
 - Set kubectl context if needed:
     - `kubectl config use-context docker-desktop`    
 - Deploy the Plant API:
-    - `rad deploy ./plant.bicep`
+    - `rad deploy ./plant.bicep -g test`
 - Deploy the Dispatch api:
-    - `rad deploy ./dispatch.bicep`
+    - `rad deploy ./dispatch.bicep -g test`
     - If you get `"message": "Container state is 'Terminated' Reason: Error, Message: "` errors, try run & deploy again until it works
 - Run the Frontend and Gateway:
     - **Localhost + Docker-Desktop**:        

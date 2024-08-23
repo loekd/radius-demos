@@ -1,11 +1,12 @@
 cd ..
-rad workspace list
+
 rad workspace switch local
-rad deploy ./frontend.bicep --parameters hostName=localhost --parameters useHttps=true
+rad deploy ./frontend.bicep -g test --parameters hostName=localhost --parameters useHttps=true
 
 wt $PWD\scripts\portforwards.bat
 
-curl -k https://localhost
+#curl -k https://localhost
+#check api health
 curl -k https://localhost/api/healthz
 
 explorer http://localhost

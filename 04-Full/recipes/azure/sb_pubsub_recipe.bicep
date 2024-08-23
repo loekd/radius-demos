@@ -1,6 +1,6 @@
 // Azure Service Bus PubSub Recipe
 
-import radius as radius
+extension radius
 
 @description('Radius-provided object containing information about the resouce calling the Recipe')
 param context object
@@ -50,10 +50,10 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
   tags: union(tags, radiusTags)
 }
 
-import kubernetes as k8s {
+extension kubernetes with {
   kubeConfig: ''
   namespace: context.runtime.kubernetes.namespace
-}
+} as kubernetes
 
 resource daprComponent 'dapr.io/Component@v1alpha1' = {
   metadata: {

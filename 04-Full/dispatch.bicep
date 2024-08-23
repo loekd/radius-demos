@@ -1,4 +1,9 @@
-import radius as radius
+extension radius
+// import the kubernetes module
+extension kubernetes with {
+  kubeConfig: ''
+  namespace: kubernetesNamespace
+} as kubernetes
 
 @description('Specifies the Environment Name.')
 param environmentName string = 'test'
@@ -14,11 +19,6 @@ var dispatchApiPort = 8080
 
 @description('The k8s namespace name.')
 var kubernetesNamespace = '${environmentName}-${applicationName}'
-
-import kubernetes as kubernetes {
-  kubeConfig: ''
-  namespace: kubernetesNamespace
-}
 
 //Deploy shared resources like Jaeger and PubSub
 module shared 'shared.bicep' = {

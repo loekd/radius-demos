@@ -138,10 +138,10 @@ resource daprComponent 'dapr.io/Component@v1alpha1' = {
   }
 }
 
-import kubernetes as k8s {
+extension kubernetes with {
   kubeConfig: ''
   namespace: context.runtime.kubernetes.namespace
-}
+} as kubernetes
 
 output result object = {
   // This workaround is needed because the deployment engine omits Kubernetes resources from its output.

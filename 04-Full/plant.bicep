@@ -1,4 +1,9 @@
-import radius as radius
+extension radius
+// import the kubernetes module
+extension kubernetes with {
+  kubeConfig: ''
+  namespace: kubernetesNamespace
+} as kubernetes
 
 @description('Specifies the Environment Name.')
 param environmentName string = 'test'
@@ -24,12 +29,6 @@ module shared 'shared.bicep' = {
     applicationName: applicationName
   }
 }
-
-import kubernetes as localKubernetes {
-  kubeConfig: ''
-  namespace: kubernetesNamespace
-}
-
 
 resource daprConfig 'dapr.io/Configuration@v1alpha1' = {
   metadata: {

@@ -1,6 +1,6 @@
 // Shared services like Zipkin and Pub/Sub are defined here. Used from Dispatch and Plant APIs.
 
-import radius as radius
+extension radius
 
 @description('Specifies the Environment Name.')
 param environmentName string = 'test'
