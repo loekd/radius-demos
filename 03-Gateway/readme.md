@@ -34,15 +34,15 @@ Please note that currently the **Gateway doesn't work when running with K3d**. S
 
 - Open a terminal    
     - Call the Blue API:
-    - `curl  http://localhost/blue/api/color/`
+    - `curl -HHost:test.loekd.com http://localhost/blue/api/color/`
     - Path rewriting will strip the matched word from the path and forward the request to the downstream (blue) API.
 
     - Call the Green API:
-    - `curl  http://localhost/api/color/`
+    - `curl -HHost:test.loekd.com http://localhost/api/color/`
     - No path rewriting configured, so the path will be forwarded to the downstream (green) API.
 
     - Call the main site:
-    - `curl  http://localhost`
+    - `curl -HHost:test.loekd.com http://localhost`
     - No path rewriting configured, so the path will be forwarded to the downstream Nginx.
 
 
