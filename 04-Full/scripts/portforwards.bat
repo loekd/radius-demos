@@ -1,6 +1,5 @@
-@REM #port forward to app
+@REM #set correct k8s cluster
 kubectl config use-context docker-desktop
-wt kubectl port-forward services/frontend 80:80 -n test-demo04
 
 @REM #port forward Jaeger
 wt kubectl port-forward services/jaeger-3cat3stttmlle 16686:16686 -n test-demo04

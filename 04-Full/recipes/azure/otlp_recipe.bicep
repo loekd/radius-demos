@@ -42,15 +42,18 @@ resource configMap 'core/ConfigMap@v1' = {
     'otel-collector-config.yaml': concat('''
     receivers:
       zipkin:
+        endpoint: "0.0.0.0:9411"
     extensions:
       health_check:
         path: "/health"
+        endpoint: "0.0.0.0:13133"
       pprof:
         endpoint: :1888
       zpages:
         endpoint: :55679
     exporters:
       debug:
+        verbosity: basic
       azuremonitor:
         connection_string: "InstrumentationKey=-45e5-8007-0e9b6c6a5c15;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=2f51e7eb-f120-4961-8fbd-52905eb88912"
     processors:

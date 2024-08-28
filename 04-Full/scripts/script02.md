@@ -3,7 +3,7 @@ rad workspace list
 rad workspace switch cloud
 rad group create prod
 
-rad deploy ./frontend.bicep --parameters environmentName=prod --parameters hostName=demo.loekd.com
+rad deploy ./app.bicep --parameters environmentName=prod --parameters hostName=demo.loekd.com --parameters useHttps=true
 
 #check api health
 curl https://demo.loekd.com/api/healthz

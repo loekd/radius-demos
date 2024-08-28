@@ -8,4 +8,4 @@ rad group show test -o json
 rad run ./app_v1.bicep --group test --application demo01
 $CTRL+C
 
-rad app delete demo01 -g test -y
+rad app delete demo01 --group test -y
