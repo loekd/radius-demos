@@ -1,6 +1,7 @@
 cd ..
 
 rad workspace switch local
+rad deploy ./environments/test.bicep -g test
 rad deploy ./app.bicep -g test --parameters hostName=localhost --parameters useHttps=true
 
 wt $PWD\scripts\portforwards.bat

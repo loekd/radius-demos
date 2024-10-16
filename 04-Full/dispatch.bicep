@@ -83,6 +83,7 @@ resource dispatch_api 'Applications.Core/containers@2023-10-01-preview' = {
 
 
 // Dapr configuration for telemetry through Jaeger (zipkin endpoint)
+#disable-next-line BCP081
 resource daprConfig 'dapr.io/Configuration@v1alpha1' = {
   metadata: {
     name: 'dispatchdaprconfig'

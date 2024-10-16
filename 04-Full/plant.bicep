@@ -30,6 +30,7 @@ module shared 'shared.bicep' = {
   }
 }
 
+#disable-next-line BCP081
 resource daprConfig 'dapr.io/Configuration@v1alpha1' = {
   metadata: {
     name: 'plantdaprconfig'
@@ -58,7 +59,9 @@ resource plant_api 'Applications.Core/containers@2023-10-01-preview' = {
       image: empty(containerRegistry) ? 'missioncriticaldemo.plantapi:latest' : '${containerRegistry}/missioncriticaldemo.plantapi:latest'
       imagePullPolicy: empty(containerRegistry) ? 'Never' : 'IfNotPresent'
       env: {
-        ASPNETCORE_URLS: 'http://+:${plantApiPort}'
+        ASPNETCORE_URLS: {
+          value: 'http://+:${plantApiPort}'
+        }
       }
       ports: {
         api: {
