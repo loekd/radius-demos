@@ -2,11 +2,11 @@
     "experimentalFeaturesEnabled": {
       "assertions": true,
       "testFramework": true,
-      "extensibility": true,
-      "extensionRegistry": true,
-      "dynamicTypeLoading": true
+      "extensibility": true
+      // "extensionRegistry": true,
+      // "dynamicTypeLoading": true
     },
     "extensions": {
-      "radius": "br:biceptypes.azurecr.io/radius:0.39"
+      "radius": "br:biceptypes.azurecr.io/radius:0.42"
     }
 }

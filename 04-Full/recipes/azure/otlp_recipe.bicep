@@ -55,7 +55,7 @@ resource configMap 'core/ConfigMap@v1' = {
       debug:
         verbosity: basic
       azuremonitor:
-        connection_string: "InstrumentationKey=-45e5-8007-0e9b6c6a5c15;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=2f51e7eb-f120-4961-8fbd-52905eb88912"
+        connection_string: "InstrumentationKey=25cb4d8b-5d12-45e5-8007-0e9b6c6a5c15;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=2f51e7eb-f120-4961-8fbd-52905eb88912"
     processors:
       batch:
     service:

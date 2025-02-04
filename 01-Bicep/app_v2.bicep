@@ -44,7 +44,7 @@ resource container01 'Applications.Core/containers@2023-10-01-preview' = {
       }
     }
     connections: {
-      orders: {
+      redis: {
         source: redisCache01.id
       }
     }

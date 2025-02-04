@@ -24,7 +24,7 @@ resource green 'Applications.Core/containers@2023-10-01-preview' = {
     container: {
       image: 'xpiritbv/bluegreen:green'
       env: {
-        ASPNETCORE_URLS: 'http://+:8080'
+        ASPNETCORE_URLS: {value: 'http://+:8080' }
       }
       ports: {
         web: {
@@ -46,7 +46,7 @@ resource blue 'Applications.Core/containers@2023-10-01-preview' = {
     container: {
       image: 'xpiritbv/bluegreen:blue'
       env: {
-        ASPNETCORE_URLS: 'http://+:8082'
+        ASPNETCORE_URLS: { value: 'http://+:8082' } 
       }
       ports: {
         web: {
