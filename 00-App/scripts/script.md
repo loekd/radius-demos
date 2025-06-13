@@ -7,8 +7,11 @@ rad workspace switch dev
 rad group list
 rad group create dev
 
+#environments
+rad env create --group dev dev 
+
 #app
-rad run ./app.bicep --group dev --application demo00
+rad run ./app.bicep --group dev --environment dev --application demo00
 rad app show --application demo00
 
 #clean

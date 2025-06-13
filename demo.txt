@@ -1,0 +1,14 @@
+//demo1 (app)
+ScriptRunnerMac -f /Users/loekd/projects/radius-demos/01-Bicep/scripts/script01.md
+
+//demo2 (state)
+ScriptRunnerMac -f /Users/loekd/projects/radius-demos/01-Bicep/scripts/script02.md
+
+//demo3 (dapr)
+ScriptRunnerMac -f /Users/loekd/projects/radius-demos/02-Dapr/scripts/script.md
+
+//demo4 (full local)
+ScriptRunnerMac -f /Users/loekd/projects/radius-demos/04-Full/scripts/script01.md
+
+//demo5 (full cloud)
+ScriptRunnerMac -f /Users/loekd/projects/radius-demos/04-Full/scripts/script02.md
